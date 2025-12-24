@@ -1,0 +1,7 @@
+add_executable(QueensMove "QueensMove.cpp")
+add_executable(RightTriangle "RightTriangle.cpp")
+add_executable(LeapYear "LeapYear.cpp")
+add_executable(NumberOfDays "NumberOfDays.cpp")
+add_executable(CalendarPrinting "CalendarPrinting.cpp")
+add_executable(DigitsSum "DigitsSum.cpp")
+add_executable(Ln2 "Ln2.cpp")
