@@ -1,2 +1,6 @@
 add_executable(ArgMax "ArgMax.cpp")
 add_executable(Join "Join.cpp")
+add_executable(Transpose "Transpose.cpp")
+add_executable(PointsSort "PointsSort.cpp")
+add_executable(Split "Split.cpp")
+add_executable(CommonPrefix "CommonPrefix.cpp")
