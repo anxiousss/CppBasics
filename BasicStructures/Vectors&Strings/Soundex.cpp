@@ -10,7 +10,7 @@ int main() {
 
     size_t word_size = word.size();
     std::string code;
-    code.push_back(word[0]);}
+    code.push_back(word[0]);
 
     for (size_t i = 1; i < word_size; ++i) {
         char c = std::tolower(word[i]);
@@ -19,7 +19,7 @@ int main() {
         for (size_t j = 1; j < 7; ++j) {
             const auto& s = replaces[j];
             if (s.find(c) != std::string::npos) {
-                code.push_back(static_cast<char>(j + '0'));
+                code.push_back(j + '0');
                 found = true;
                 break;
             }
@@ -29,6 +29,7 @@ int main() {
     }
 
     code.erase(std::remove(code.begin(), code.end(), '0'), code.end());
+
 
     if (code.size() != 1) {
         auto it = code.begin() + 1;
