@@ -3,21 +3,20 @@
 #include <string>
 
 void Down(int& cursor, std::vector<std::string>& text) {
-    if (cursor == (int)text.size()) {
-        return;
+    if (cursor < (int)text.size()) {
+        ++cursor;
     }
-    ++cursor;
 }
 
 void Up(int& cursor) {
-    if (cursor == 0) {
-        return;
+    if (cursor > 0) {
+        --cursor;
     }
-    --cursor;
 }
 
 void Ctrl_X(int& cursor,std::string& buffer, std::vector<std::string>& text) {
     if (text[cursor].empty()) {
+        buffer = "";
         return;
     }
     buffer = text[cursor];
@@ -41,6 +40,7 @@ int main() {
         text.push_back(word);
     }
 
+    text.emplace_back("");
     std::string cmd;
     while (std::getline(std::cin, cmd)) {
         if (cmd == "Down") {
