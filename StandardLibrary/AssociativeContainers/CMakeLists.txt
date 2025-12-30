@@ -1,0 +1,5 @@
+add_executable(HasTheNumberAppearedBefore "HasTheNumberAppearedBefore.cpp")
+add_executable(CommonLetters "CommonLetters.cpp")
+add_executable(FileSystem "FileSystem.cpp")
+add_executable(SubjectIndex "SubjectIndex.cpp")
+add_executable(SymbolicGrams "SymbolicGrams.cpp")

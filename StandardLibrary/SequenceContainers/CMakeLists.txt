@@ -1,0 +1,4 @@
+add_executable(TemplatePrint "TemplatePrint.cpp")
+add_executable(PaperworkCheck "PaperworkCheck.cpp")
+add_executable(Wagons "Wagons.cpp")
+add_executable(TextEditor "TextEditor.cpp")
