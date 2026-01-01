@@ -7,7 +7,7 @@ int shift_position = 0;
 std::string prev_cmd;
 
 void Down(int& cursor, std::vector<std::string>& text) {
-    if (cursor <= (int)text.size()) {
+    if (cursor <= (int)text.size() - 1) {
         ++cursor;
     }
 }
@@ -74,7 +74,6 @@ int main() {
 
     text.emplace_back("");
     std::string cmd;
-    std::vector<std::string> highlighted_strings;
     bool is_shifted = false;
     while (std::getline(std::cin, cmd)) {
         if (cmd == "Down") {
