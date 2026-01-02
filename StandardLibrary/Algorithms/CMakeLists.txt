@@ -1,0 +1,5 @@
+add_executable(DuplicateVector "DuplicateVector.cpp")
+add_executable(UniqueAlgorithm "UniqueAlgorithm.cpp")
+add_executable(SetDifferenceAlgorithm "SetDifferenceAlgorithm.cpp")
+add_executable(BinarySearch "BinarySearch.cpp")
+add_executable(Process "Process.cpp")
