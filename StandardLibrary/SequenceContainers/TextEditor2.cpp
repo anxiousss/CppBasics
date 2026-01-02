@@ -19,6 +19,7 @@ void Up(int& cursor) {
 }
 
 void Ctrl_X(int& cursor, std::vector<std::string>& buffer, std::vector<std::string>& text, bool& is_shifted) {
+    buffer.clear();
     if (!text[cursor].empty()) {
         size_t start = std::min(shift_position, cursor);
         size_t end = shift_position ^ cursor ^ start;
@@ -28,7 +29,7 @@ void Ctrl_X(int& cursor, std::vector<std::string>& buffer, std::vector<std::stri
                 buffer.push_back(text[start]);
                 text.erase(text.begin() + start);
             }
-            is_shifted = !is_shifted;
+            is_shifted = false;
             cursor -= end - start;
         } else {
             buffer.push_back(text[cursor]);
@@ -39,11 +40,11 @@ void Ctrl_X(int& cursor, std::vector<std::string>& buffer, std::vector<std::stri
 
 void Ctrl_V(int& cursor, std::vector<std::string>& buffer, std::vector<std::string>& text, bool& is_shifted) {
     if (!buffer.empty()) {
+        size_t buffer_size = buffer.size();
         if (is_shifted) {
             size_t start = std::min(shift_position, cursor);
             size_t end = shift_position ^ cursor ^ start;
             if (prev_cmd == "Up" || prev_cmd == "Down") {
-                size_t buffer_size = buffer.size();
                 for (size_t i = start; i < buffer_size + start; ++i) {
                     text[i] = buffer[i - start];
                 }
@@ -55,9 +56,11 @@ void Ctrl_V(int& cursor, std::vector<std::string>& buffer, std::vector<std::stri
                     text.insert(text.begin() + i, buffer[i - start]);
                 }
             }
-            is_shifted = !is_shifted;
+            is_shifted = false;
         } else {
-            text.insert(text.begin() + cursor, buffer.back());
+            for (size_t i = cursor; i < cursor + buffer_size; ++i) {
+                text.insert(text.begin() + i, buffer[i - cursor]);
+            }
         }
         ++cursor;
     }
