@@ -14,8 +14,3 @@ void Print(const T& container, const std::string& delimeter) {
         std::cout << el << delimeter;
     }
 }
-
-int main() {
-    std::vector<int> data = {1, 2, 3, 4};
-    Print(data, ", ");  // 1, 2, 3, 4
-}
