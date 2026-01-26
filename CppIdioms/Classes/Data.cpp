@@ -8,8 +8,7 @@ std::unordered_map<int, int> days_in_month = {{1, 31}, {2, 28}, {3, 31,}, {4 , 3
 
 int date_to_days(int day, int month, int year);
 std::tuple<int, int, int> days_to_date(int days);
-bool is_leap_year(int year) {return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
-}
+bool is_leap_year(int year) {return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);}
 
 class Date {
 private:
@@ -30,8 +29,16 @@ public:
 };
 
 Date::Date(int day, int month, int year) {
-    if (year <= 2099 && year >=  1970 && month >= 1 && month <= 12 && day > 1 && ((month == 2 && is_leap_year(year) && day < 29) ||
-        day <= days_in_month[month])) {
+    bool is_valid = true;
+
+    if (year < 1970 || year > 2099 || (month < 1 || month > 12)) is_valid = false;
+    else {
+        int max_days = days_in_month.at(month);
+        if (month == 2 && is_leap_year(year)) max_days = 29;
+        if (day < 1 || day > max_days) is_valid = false;
+    }
+
+    if (is_valid) {
         this->day = day;
         this->month = month;
         this->year = year;
@@ -40,7 +47,6 @@ Date::Date(int day, int month, int year) {
         this->month = 1;
         this->year = 1970;
     }
-
 }
 
 int date_to_days(int day, int month, int year) {
@@ -52,9 +58,8 @@ int date_to_days(int day, int month, int year) {
 
     for (int m = 1; m < month; ++m) {
         days += days_in_month[m];
-        if (m == 2 && is_leap_year(year)) {
+        if (m == 2 && is_leap_year(year))
             days += 1;
-        }
     }
 
     days += day;
@@ -65,28 +70,29 @@ int date_to_days(int day, int month, int year) {
 std::tuple<int, int, int> days_to_date(int days) {
     int month = 1, years = 1970;
 
-    while (days > 364) {
-        if (is_leap_year(years)) {
-            days -= 366;
-        } else {
-            days -= 365;
+    while (true) {
+        int days_in_year = is_leap_year(years) ? 366 : 365;
+        if (days <= days_in_year) {
+            break;
         }
+        days -= days_in_year;
         ++years;
     }
 
-    while (true) {
-        if (is_leap_year(years + 1) && month == 2) {
-            if (days - days_in_month[month] + 1 <= 0) {
-                return {days, month, years};
-            }
-        } else {
-            if (days - days_in_month[month] <= 0) {
-                return {days, month, years};
-            }
+    while (month <= 12) {
+        int days_in_current_month = days_in_month[month];
+        if (month == 2 && is_leap_year(years)) {
+            days_in_current_month = 29;
         }
+
+        if (days <= days_in_current_month) {
+            return {days, month, years};
+        }
+
+        days -= days_in_current_month;
         month += 1;
-        days -= days_in_month[month];
     }
+    return {1, 1, 1970};
 }
 
 
@@ -104,7 +110,7 @@ int Date::GetYear() const {
 
 Date Date::operator+(int days) const {
     int new_days = date_to_days(GetDay(), GetMonth(), GetYear()) + days;
-    if (new_days < 0)
+    if (new_days < 1)
         return {1, 1, 1970};
     auto [new_day, new_month, new_year] = days_to_date(new_days);
     return {new_day, new_month, new_year};
@@ -112,7 +118,7 @@ Date Date::operator+(int days) const {
 
 Date Date::operator-(int days) const {
     int new_days = date_to_days(GetDay(), GetMonth(), GetYear()) - days;
-    if (new_days < 0)
+    if (new_days < 1)
         return {1, 1, 1970};
     auto [new_day, new_month, new_year] = days_to_date(new_days);
     return {new_day, new_month, new_year};
@@ -130,7 +136,7 @@ std::ostream& operator << (std::ostream& out, const Date& date) {
 
 int main() {
     // Тест 1: Создание корректной даты
-    Date date1(4, 1, 2026);
+    Date date1(1, 1, 2026);
     std::cout << "Date1: " << date1 << std::endl;
 
     // Тест 2: Создание некорректной даты (должно стать 1:1:1970)
