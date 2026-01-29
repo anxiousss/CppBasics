@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <set>
-#include <algorithm>
+#include <limits>
 
 enum class Type {
     W = 0,
@@ -10,18 +9,12 @@ enum class Type {
 
 class Stock {
 private:
-    struct box {
-        int weight;
-        int volume;
-        int i;
-    };
-
     int numer = 0;
-    std::set<int> weights;
-    std::set<int> volumes;
-    std::vector<box> boxes;
+    std::vector<int> weights;
+    std::vector<int> volumes;
+    std::vector<int> indices;
 
-    int Get(int value, Type type);
+    int Get(int threshold, Type type);
 
 public:
     void Add(int w, int v);
@@ -32,38 +25,53 @@ public:
 };
 
 void Stock::Add(int w, int v) {
-    weights.insert(w);
-    volumes.insert(v);
-    boxes.push_back({w, v, numer});
-    ++numer;
+    weights.push_back(w);
+    volumes.push_back(v);
+    indices.push_back(numer++);
 }
 
-int Stock::Get(int min_value, Type type) {
-    std::set<int>* main_values_set;
-    std::set<int>* additional_values_set;
+int Stock::Get(int threshold, Type type) {
+
+    std::vector<int>* vec;
+
     if (type == Type::W) {
-        main_values_set = &weights;
-        additional_values_set = &volumes;
+        vec = &weights;
     } else {
-        main_values_set = &volumes;
-        additional_values_set = &weights;
+        vec = &volumes;
     }
 
-    auto it = std::find_if(main_values_set->begin(), main_values_set->end(),
-                           [&min_value](int value) {return value >= min_value;});
-    if (it == main_values_set->end()) {
-        return -1;
-    }
+    int min_value = std::numeric_limits<int>::max();
+    bool found = false;
 
-    int b_index = 0;
-    for (const auto& b: boxes) {
-        if ((b.weight == *it && type == Type::W) || (b.volume == *it && type == Type::V)) {
-            main_values_set->erase(it);
-            additional_values_set->erase(it);
-            boxes.erase(boxes.begin() + b_index);
-            return b_index;
+    int size = vec->size();
+    int min_index = -1;
+    for (int i = size - 1; i > -1; --i) {
+        int num = (*vec)[i];
+        if (num >= threshold) {
+            if (!found || num < min_value) {
+                min_value = num;
+                min_index = i;
+                found = true;
+            }
         }
-        ++b_index;
+    }
+
+    if (found) {
+        int real_index = indices[min_index];
+        if (min_index != static_cast<int>(size - 1)) {
+            std::swap(weights[min_index], weights.back());
+            std::swap(volumes[min_index], volumes.back());
+            std::swap(indices[min_index], indices.back());
+            weights.erase(weights.begin() + min_index);
+            volumes.erase(volumes.begin() + min_index);
+            indices.erase(indices.begin() + min_index);
+        }  else {
+            weights.pop_back();
+            volumes.pop_back();
+            indices.pop_back();
+        }
+
+        return real_index;
     }
     return -1;
 }
