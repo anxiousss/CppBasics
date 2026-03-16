@@ -32,6 +32,7 @@ public:
         return wins;
     }
 
+    // must be private!!
 private:
     bool CheckRow(size_t i, size_t j) const {
         size_t d1 = 0;
@@ -58,7 +59,7 @@ private:
             ++d2;
         }
 
-        return d1 + d2  > K;
+        return d1 + d2 > K;
     }
 
     bool CheckDiagonal1(size_t i, size_t j) const {
@@ -70,6 +71,9 @@ private:
         size_t cells = 0;
         int state = Table[i][j];
         while (column < static_cast<int>(N) && row < static_cast<int>(N)) {
+            if (K <= cells) {
+                return true;
+            }
             if (Table[row][column] == state)
                 ++cells;
             else
@@ -89,6 +93,9 @@ private:
         size_t cells = 0;
         int state = Table[i][j];
         while (column > -1 && row < static_cast<int>(N)) {
+            if (K <= cells) {
+                return true;
+            }
             if (Table[row][column] == state)
                 ++cells;
             else
