@@ -23,6 +23,7 @@ std::pair<size_t, size_t> Table<T>::size() const {
 
 template<typename T>
 void Table<T>::resize(size_t new_rows, size_t new_columns) {
+    table.resize(new_rows);
     for (size_t i = 0; i < new_rows; ++i) {
         table[i].resize(new_columns);
     }

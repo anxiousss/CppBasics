@@ -1,5 +1,6 @@
 add_executable(Table "Table.cpp")
 add_executable(Queue "Queue.cpp")
 add_executable(KeyValueStorage "KeyValueStorage.cpp")
+add_executable(Deque "Deque.cpp")
 add_executable(MathVector "MathVector.cpp")
 add_executable(Polynomial "Polynomial.cpp")

@@ -1,0 +1,8 @@
+add_executable(ObjectLife0 "ObjectLife0.cpp")
+add_executable(ObjectLife1 "ObjectLife1.cpp")
+add_executable(ObjectLife2 "ObjectLife2.cpp")
+add_executable(ObjectLife3 "ObjectLife3.cpp")
+add_executable(ObjectLife4 "ObjectLife4.cpp")
+add_executable(ObjectLife5 "ObjectLife5.cpp")
+add_executable(ObjectLife6 "ObjectLife6.cpp")
+add_executable(TimerGuard "TimerGuard.cpp")
